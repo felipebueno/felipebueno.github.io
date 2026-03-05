@@ -14,6 +14,7 @@
             --surface: #1a1a1a;
             --surface-hover: #222;
             --border: #2a2a2a;
+            --border-hover: #444;
             --text: #e5e5e5;
             --text-muted: #999;
             --text-dim: #666;
@@ -25,6 +26,44 @@
             --amber-dim: rgba(251, 191, 36, 0.12);
             --radius: 12px;
             --max-width: 800px;
+        }
+
+        /* ===== Light Theme ===== */
+        [data-theme="light"] {
+            --bg: #f8f8f8;
+            --surface: #fff;
+            --surface-hover: #f0f0f0;
+            --border: #e0e0e0;
+            --border-hover: #ccc;
+            --text: #1a1a1a;
+            --text-muted: #555;
+            --text-dim: #888;
+            --accent: #2563eb;
+            --accent-dim: rgba(37, 99, 235, 0.08);
+            --green: #16a34a;
+            --green-dim: rgba(22, 163, 74, 0.08);
+            --amber: #d97706;
+            --amber-dim: rgba(217, 119, 6, 0.08);
+        }
+
+        /* System preference: apply light if no explicit choice */
+        @media (prefers-color-scheme: light) {
+            :root:not([data-theme="dark"]) {
+                --bg: #f8f8f8;
+                --surface: #fff;
+                --surface-hover: #f0f0f0;
+                --border: #e0e0e0;
+                --border-hover: #ccc;
+                --text: #1a1a1a;
+                --text-muted: #555;
+                --text-dim: #888;
+                --accent: #2563eb;
+                --accent-dim: rgba(37, 99, 235, 0.08);
+                --green: #16a34a;
+                --green-dim: rgba(22, 163, 74, 0.08);
+                --amber: #d97706;
+                --amber-dim: rgba(217, 119, 6, 0.08);
+            }
         }
 
         *,
@@ -174,7 +213,7 @@
         }
 
         .skill-card:hover {
-            border-color: #333;
+            border-color: var(--border-hover);
             background: var(--surface-hover);
         }
 
@@ -318,7 +357,7 @@
         }
 
         .lang-item:hover {
-            border-color: #333;
+            border-color: var(--border-hover);
         }
 
         .lang-item__name {
@@ -339,6 +378,62 @@
             border-top: 1px solid var(--border);
             color: var(--text-dim);
             font-size: 0.8rem;
+        }
+
+        /* ===== Theme Toggle ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .theme-toggle .icon-sun {
+            display: none;
+        }
+
+        .theme-toggle .icon-moon {
+            display: block;
+        }
+
+        /* Show sun icon in light mode */
+        [data-theme="light"] .theme-toggle .icon-sun {
+            display: block;
+        }
+
+        [data-theme="light"] .theme-toggle .icon-moon {
+            display: none;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root:not([data-theme="dark"]) .theme-toggle .icon-sun {
+                display: block;
+            }
+
+            :root:not([data-theme="dark"]) .theme-toggle .icon-moon {
+                display: none;
+            }
         }
 
         /* ===== Print ===== */
@@ -377,6 +472,10 @@
                 print-color-adjust: exact;
                 -webkit-print-color-adjust: exact;
             }
+
+            .theme-toggle {
+                display: none;
+            }
         }
 
         /* ===== Responsive ===== */
@@ -402,6 +501,26 @@
 </head>
 
 <body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
     <div class="container">
 
         <!-- Header -->
@@ -653,6 +772,31 @@
         </footer>
 
     </div>
+    <script>
+        (function () {
+            const toggle = document.getElementById('theme-toggle');
+            const root = document.documentElement;
+            const STORAGE_KEY = 'theme';
+
+            function currentEffectiveTheme() {
+                const explicit = root.getAttribute('data-theme');
+                if (explicit) return explicit;
+                return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            }
+
+            // Restore saved preference
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                root.setAttribute('data-theme', saved);
+            }
+
+            toggle.addEventListener('click', function () {
+                const next = currentEffectiveTheme() === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                localStorage.setItem(STORAGE_KEY, next);
+            });
+        })();
+    </script>
 </body>
 
 </html>
