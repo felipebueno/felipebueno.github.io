@@ -8,6 +8,11 @@
     <meta name="description"
         content="Resume of Felipe Bueno — Full Stack Developer with 15+ years of experience specializing in Flutter, Go, JavaScript, and more.">
 
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="icon" href="assets/favicon/favicon.ico">
+
     <style>
         :root {
             --bg: #0f0f0f;
@@ -105,6 +110,23 @@
             margin-bottom: 48px;
         }
 
+        .header__top {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        .header__avatar {
+            width: 84px;
+            height: 84px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: #fff;
+            flex-shrink: 0;
+        }
+
         .header__name {
             font-size: 2.5rem;
             font-weight: 700;
@@ -123,7 +145,6 @@
         .header__location {
             font-size: 0.9rem;
             color: var(--text-dim);
-            margin-bottom: 20px;
         }
 
         .header__tags {
@@ -518,6 +539,15 @@
                 font-size: 1.8rem;
             }
 
+            .header__top {
+                gap: 16px;
+            }
+
+            .header__avatar {
+                width: 64px;
+                height: 64px;
+            }
+
             .header__contact {
                 flex-direction: column;
                 gap: 10px;
@@ -587,9 +617,14 @@
 
         <!-- Header -->
         <header class="header">
-            <h1 class="header__name">Felipe Bueno</h1>
-            <p class="header__title">Full Stack Developer</p>
-            <p class="header__location">State of São Paulo, Brazil</p>
+            <div class="header__top">
+                <img src="fb.jpg" alt="Felipe Bueno" class="header__avatar">
+                <div class="header__text">
+                    <h1 class="header__name">Felipe Bueno</h1>
+                    <p class="header__title">Senior Full Stack Developer</p>
+                    <p class="header__location">State of São Paulo, Brazil</p>
+                </div>
+            </div>
 
             <div class="header__tags">
                 <span class="tag">#flutter</span>
